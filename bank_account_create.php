@@ -206,7 +206,7 @@ fill='white'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
 
             <input type="text" name="account_number" placeholder="Account Number" required>
 
-            <input type="text" name="ifsc" value="MBD002181" required>
+            <input type="hidden" name="ifsc" value="MBD002181" required readonly>
 
             <input type="text" name="name" placeholder="Full Name" required>
 
@@ -244,7 +244,7 @@ fill='white'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
                 <option value="INACTIVE">INACTIVE</option>
             </select>
 
-            <input type="number" step="0.01" name="balance" value="0.00">
+            <input type="hidden" step="0.01" name="balance" value="0.00" readonly>
 
             <select name="account_type">
                 <option value="SAVING">SAVING</option>
