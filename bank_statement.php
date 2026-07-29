@@ -714,7 +714,7 @@ fill='white'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
 
                         <tr>
 
-                            <th>ID</th>
+                            <th>Transaction ID</th>
                             <th>Date</th>
                             <th>Type</th>
                             <th>Amount</th>
