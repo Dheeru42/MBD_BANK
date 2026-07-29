@@ -206,7 +206,7 @@ fill='white'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
 
             <input type="text" name="account_number" placeholder="Account Number" required>
 
-            <input type="hidden" name="ifsc" value="MBD002181" required readonly>
+            <input type="hidden" name="ifsc" value="MBD002181" required>
 
             <input type="text" name="name" placeholder="Full Name" required>
 
