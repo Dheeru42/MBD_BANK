@@ -75,7 +75,7 @@ if (isset($_POST['deposit'])) {
             $e_balance_before = encryptData($balance_before);
 
             $s_u_balance = encryptData($balance_before + $amount);
-            
+
             // Update Balance
             mysqli_query(
                 $bank_conn,
