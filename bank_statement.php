@@ -7,9 +7,66 @@ $bank_conn = @mysqli_connect(
     "localhost",
     "root",
     "",
-    "MBD_BANK"
+    "ram_bank"
 );
 
+// secret key
+define("SECRET_KEY", "MBDPAY@2026_SUPER_SECRET_KEY_32");
+
+/* Encrypt Function */
+function encryptData($text)
+{
+    $key = hash("sha256", SECRET_KEY, true);
+    $iv  = random_bytes(16);
+
+    $cipher = openssl_encrypt(
+        $text,
+        "AES-256-CBC",
+        $key,
+        OPENSSL_RAW_DATA,
+        $iv
+    );
+
+    return base64_encode($iv . $cipher);
+}
+
+/* Decrypt Function */
+
+function decryptData($text)
+{
+    if ($text === null || $text === '') {
+        return false;
+    }
+
+    $key = hash("sha256", SECRET_KEY, true);
+
+    // Strict Base64 decoding
+    $data = base64_decode($text, true);
+
+    if ($data === false) {
+        return false;
+    }
+
+    // AES-256-CBC requires:
+    // 16 bytes IV + at least 1 byte ciphertext
+    if (strlen($data) <= 16) {
+        return false;
+    }
+
+    // Extract exactly 16-byte IV
+    $iv = substr($data, 0, 16);
+
+    // Remaining data is ciphertext
+    $cipher = substr($data, 16);
+
+    return openssl_decrypt(
+        $cipher,
+        "AES-256-CBC",
+        $key,
+        OPENSSL_RAW_DATA,
+        $iv
+    );
+}
 
 $transactions = [];
 $message = "";
@@ -62,7 +119,7 @@ if (isset($_POST['fetch'])) {
         $account = mysqli_fetch_assoc($accountResult);
 
 
-        $current_balance = $account['balance'];
+        $current_balance = decryptData($account['balance']);
 
         $account_holder = $account['name'];
 
@@ -111,21 +168,19 @@ if (isset($_POST['fetch'])) {
 
         $transactions = mysqli_stmt_get_result($stmt2);
 
-
         // Calculate Total Credit and Debit
 
         while ($row = mysqli_fetch_assoc($transactions)) {
 
-
             if ($row['transaction_type'] == "Credit") {
 
-                $total_credit += $row['amount'];
+                $total_credit += decryptData($row['amount']);
             } elseif ($row['transaction_type'] == "Debit") {
 
-                $total_debit += $row['amount'];
+                $total_debit += decryptData($row['amount']);
             } elseif ($row['transaction_type'] == "Transfer") {
 
-                $total_debit += $row['amount'];
+                $total_debit += decryptData($row['amount']);
             }
         }
 
@@ -741,6 +796,10 @@ fill='white'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
 
                             while ($row = mysqli_fetch_assoc($transactions)) {
 
+                                // decrypted balance and amount 
+                                $d_amount = decryptData($row['amount']);
+                                $d_balance_before = decryptData($row['balance_before']);
+                                $d_balance_after = decryptData($row['balance_after']);
 
                                 $type = "";
 
@@ -806,7 +865,7 @@ fill='white'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
 
                                     <td>
 
-                                        ₹ <?php echo number_format($row['amount'], 2); ?>
+                                        ₹ <?php echo number_format($d_amount, 2); ?>
 
                                     </td>
 
@@ -815,7 +874,7 @@ fill='white'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
 
                                     <td>
 
-                                        ₹ <?php echo number_format($row['balance_before'], 2); ?>
+                                        ₹ <?php echo number_format($d_amount,2); ?>
 
                                     </td>
 
@@ -823,7 +882,7 @@ fill='white'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
 
                                     <td>
 
-                                        ₹ <?php echo number_format($row['balance_after'], 2); ?>
+                                        ₹ <?php echo number_format($d_balance_after, 2); ?>
 
                                     </td>
 

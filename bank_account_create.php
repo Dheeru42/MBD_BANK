@@ -4,8 +4,51 @@ $bank_conn = @mysqli_connect(
     "localhost",
     "root",
     "",
-    "MBD_BANK"
+    "ram_bank"
 );
+
+
+// secret key
+define("SECRET_KEY", "MBDPAY@2026_SUPER_SECRET_KEY_32");
+
+/* Encrypt Function */
+function encryptData($text)
+{
+    $key = hash("sha256", SECRET_KEY, true);
+    $iv  = random_bytes(16);
+
+    $cipher = openssl_encrypt(
+        $text,
+        "AES-256-CBC",
+        $key,
+        OPENSSL_RAW_DATA,
+        $iv
+    );
+
+    return base64_encode($iv . $cipher);
+}
+
+/* Decrypt Function */
+
+function decryptData($text)
+{
+    $key = hash("sha256", SECRET_KEY, true);
+
+    $data = base64_decode($text);
+
+    $iv = substr($data, 0, 16);
+
+    $cipher = substr($data, 16);
+
+
+    return openssl_decrypt(
+        $cipher,
+        "AES-256-CBC",
+        $key,
+        OPENSSL_RAW_DATA,
+        $iv
+    );
+}
 
 $message = "";
 
@@ -25,7 +68,7 @@ if (isset($_POST['save'])) {
     $aadhar = $_POST['aadhar'];
     $transaction_id = $_POST['transaction_id'];
     $account_status = $_POST['account_status'];
-    $balance = $_POST['balance'];
+    $balance = encryptData($_POST['balance']);
     $account_type = $_POST['account_type'];
     $pin = password_hash($_POST['pin'], PASSWORD_DEFAULT);
 

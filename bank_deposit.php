@@ -4,8 +4,50 @@ $bank_conn = @mysqli_connect(
     "localhost",
     "root",
     "",
-    "MBD_BANK"
+    "ram_bank"
 );
+
+// secret key
+define("SECRET_KEY", "MBDPAY@2026_SUPER_SECRET_KEY_32");
+
+/* Encrypt Function */
+function encryptData($text)
+{
+    $key = hash("sha256", SECRET_KEY, true);
+    $iv  = random_bytes(16);
+
+    $cipher = openssl_encrypt(
+        $text,
+        "AES-256-CBC",
+        $key,
+        OPENSSL_RAW_DATA,
+        $iv
+    );
+
+    return base64_encode($iv . $cipher);
+}
+
+/* Decrypt Function */
+
+function decryptData($text)
+{
+    $key = hash("sha256", SECRET_KEY, true);
+
+    $data = base64_decode($text);
+
+    $iv = substr($data, 0, 16);
+
+    $cipher = substr($data, 16);
+
+
+    return openssl_decrypt(
+        $cipher,
+        "AES-256-CBC",
+        $key,
+        OPENSSL_RAW_DATA,
+        $iv
+    );
+}
 
 $message = "";
 
@@ -13,7 +55,7 @@ if (isset($_POST['deposit'])) {
 
     $account_number = trim($_POST['account_number']);
     $amount = floatval($_POST['amount']);
-
+    $e_amount = encryptData($amount);
     if ($amount <= 0) {
 
         $message = "Enter a valid amount.";
@@ -29,13 +71,16 @@ if (isset($_POST['deposit'])) {
 
             $user = mysqli_fetch_assoc($check);
 
-            $balance_before = $user['balance'];
+            $balance_before = decryptData($user['balance']);
+            $e_balance_before = encryptData($balance_before);
 
+            $s_u_balance = encryptData($balance_before + $amount);
+            
             // Update Balance
             mysqli_query(
                 $bank_conn,
                 "UPDATE users
-                 SET balance = balance + $amount
+                 SET balance = '$s_u_balance'
                  WHERE account_number='$account_number'"
             );
 
@@ -71,8 +116,8 @@ if (isset($_POST['deposit'])) {
                     '$transaction_id',
                     '$account_number',
                     'Credit',
-                    '$amount',
-                    '$balance_before',
+                    '$e_amount',
+                    '$e_balance_before',
                     '$updatedBalance',
                     'Success',
                     'Cash Deposit'
