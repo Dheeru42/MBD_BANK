@@ -1,11 +1,18 @@
 <?php
-
+session_start();
 $bank_conn = @mysqli_connect(
     "localhost",
     "root",
     "",
     "ram_bank"
 );
+
+$mess = "";
+
+if (isset($_SESSION['message'])) {
+    $mess = $_SESSION['message'];
+    unset($_SESSION['message']);
+}
 
 // secret key
 define("SECRET_KEY", "MBDPAY@2026_SUPER_SECRET_KEY_32");
@@ -125,13 +132,15 @@ if (isset($_POST['deposit'])) {
             );
 
             $message = "₹ " . number_format($amount, 2) . " deposited successfully.<br>Transaction ID : " . $transaction_id;
+            $_SESSION['message'] = $message;
+            header("location:bank_deposit.php");
+            exit;
         } else {
 
             $message = "Account not found.";
         }
     }
 }
-
 ?>
 
 
@@ -320,6 +329,12 @@ fill='white'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
             <?php
             if ($message != "") {
                 echo "<div class='message'>$message</div>";
+            }
+            ?>
+
+            <?php
+            if ($mess != "") {
+                echo "<div class='message'>$mess</div>";
             }
             ?>
 
