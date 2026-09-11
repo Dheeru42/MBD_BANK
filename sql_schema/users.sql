@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 04, 2026 at 10:43 AM
+-- Generation Time: Aug 16, 2026 at 01:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -55,8 +55,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `customer_id`, `account_number`, `ifsc`, `name`, `father_name`, `age`, `gender`, `current_address`, `occupation`, `mobile`, `email`, `aadhar`, `transaction_id`, `account_status`, `open_date`, `open_time`, `balance`, `account_type`, `pin`) VALUES
-(1, '2101', '2181010001', 'MBD002181', 'Dheeraj Varshney', 'Bhupendra Kumar', 26, 'Male', '2G/18,Gopi mill compound Naurangabad,Aligarh\r\n', 'Student', '9411272563', 'dheerajvarshney74@gmail.com', '438755079546', 'TXN202608041038119224', 'ACTIVE', '2026-08-04', '14:08:47', 'BXfMgfnKeiVCV9uSSGVQZkoVc3VoE+/DA42feCaGVcI=', 'SAVING', '$2y$10$gCOPLR2ef3.gSOWGMONlc.ywbs8ojfCu7BvFj.6gD4KLwyelYrVG6'),
-(2, '2102', '2181010002', 'MBD002181', 'Ram Varshney', 'Dasrath Varshney', 27, 'Male', '2G/18,Gopi mill compound Naurangabad,Aligarh\r\n', 'God', '9412510127', 'ramvarshney27@gmail.com', '138755079546', 'TXN202608041038476518', 'ACTIVE', '2026-08-04', '14:09:24', '/37CR2ucgyLvIkcfN0fo2pVktDYnuAgiB5LMnGRUd3Q=', 'SAVING', '$2y$10$Mw2wBq2zCvJekbtmHnqhsehnV/kGouznKeaRdKBLH.MTMND2Vr4rK');
+(1, '2101', '2181010001', 'MBD002181', 'Dheeraj Varshney', 'Bhupendra Kumar', 26, 'Male', '2G/18,Gopi mill compound Naurangabad,Aligarh\r\n', 'Student', '9411272563', 'dheerajvarshney74@gmail.com', '438755079546', 'TXN202608041038119224', 'ACTIVE', '2026-08-04', '14:08:47', 'D9e1K/cSQt+CmgW6yPepQwX9hO7FJg6RRGn5vmo6uiw=', 'SAVING', '$2y$10$gCOPLR2ef3.gSOWGMONlc.ywbs8ojfCu7BvFj.6gD4KLwyelYrVG6'),
+(2, '2102', '2181010002', 'MBD002181', 'Ram Varshney', 'Dasrath Varshney', 27, 'Male', '2G/18,Gopi mill compound Naurangabad,Aligarh\r\n', 'God', '9412510127', 'ramvarshney27@gmail.com', '138755079546', 'TXN202608041038476518', 'ACTIVE', '2026-08-04', '14:09:24', '7JSRKXUa+1iEmJC3H1WJrMYe4dc7mTxBjtCDVUeQa/g=', 'SAVING', '$2y$10$Mw2wBq2zCvJekbtmHnqhsehnV/kGouznKeaRdKBLH.MTMND2Vr4rK'),
+(3, '2103', '2181010003', 'MBD002181', 'Sita Varshney', 'Janak Varshney', 18, 'Female', '2G/18,Gopi mill compound Naurangabad,Aligarh\r\n', 'God', '7310627489', 'sitavarshney18@gmail.com', '238755079546', 'TXN202608071105479341', 'ACTIVE', '2026-08-07', '14:36:58', '9iviThEvvozR/dKYuqL71T6RvLadXF5yi0w3a1aTPug=', 'SAVING', '$2y$10$kJpaSkOhfHfdNfleRiEqIulQDDRxhfkrTdikyFzC2pSxgUkRVPCzC');
 
 --
 -- Indexes for dumped tables
@@ -82,7 +83,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
