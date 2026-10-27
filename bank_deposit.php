@@ -15,7 +15,7 @@ if (isset($_SESSION['message'])) {
 }
 
 // secret key
-define("SECRET_KEY", "MBDPAY@2026_SUPER_SECRET_KEY_32");
+require_once 'keys/config.php';
 
 /* Encrypt Function */
 function encryptData($text)
